@@ -12,6 +12,7 @@
 						<th>Kode</th>
 						<th>Penyakit</th>
 						<th>Gejala</th>
+						<th>Nilai</th>
 						<th>Aksi</th>
 					</tr>
 				</thead>
@@ -21,6 +22,7 @@
 						<td><?php echo $no++ ?></td>
 						<td><?php echo $data['nama'] ?></td>
 						<td><?php echo $data['nama_gejala'] ?></td>
+						<td><?php echo $data['nilai_gp'] ?></td>
 						<td style="text-align: center; width: 200px;">
 							<a href="<?php echo site_url('/nilai_cf/edit/').$data['gpid'] ?>" class="btn btn-primary btn-sm" style="border-radius: 0px; background: #51677B; border-color: #51677B;"><i class="fa fa-edit"></i> Edit</a>
 							<a href="<?php echo site_url('/nilai_cf/hapus/').$data['gpid'] ?>" class="btn btn-danger btn-sm" style="border-radius: 0px;" onclick="javasciprt: return confirm('Apakah anda yakin ?')"><i class="fa fa-trash"></i> Hapus</a>

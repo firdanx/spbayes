@@ -45,7 +45,7 @@
 												<option value="<?php echo $key->id ?>"><?php echo $key->nama; ?></option>
 											<?php } ?> 
 										
-										</select>
+									</select>
 									<br>
 									<button type="submit" name="submit" class="btn btn-primary btn-sm" style="border-radius: 0px; background: #3EA8FF; border-color: #3EA8FF;">Simpan</button>
 									<a href="<?php echo site_url('/nilai_cf/index') ?>" class="btn btn-default btn-flat btn-sm" style="border-radius: 0px;">Batal</a>

@@ -28,11 +28,13 @@ class Gejala_model extends CI_Model {
 		$kode = $this->input->post('kode');
 		$nama_gejala = $this->input->post('nama_gejala');
 		$nilai_gejala = $this->input->post('nilai_gejala');
+		$nilai_gejala2 = $this->input->post('nilai_gejala2');
 
 	$data = array(
 					'kode'=>$kode,
 					'nama_gejala'=>$nama_gejala,
 					'nilai'=>$nilai_gejala,
+					'nilai2'=>$nilai_gejala2,
 			);
 	$this->db->insert('gejala', $data);
 
@@ -48,11 +50,13 @@ class Gejala_model extends CI_Model {
 		$kode = $this->input->post('kode');
 		$nama_gejala = $this->input->post('nama_gejala');
 		$nilai_gejala = $this->input->post('nilai_gejala');
+		$nilai_gejala2 = $this->input->post('nilai_gejala2');
 
 		$data = array(
 					'kode'=>$kode,
 					'nama_gejala'=>$nama_gejala,
 					'nilai'=>$nilai_gejala,
+					'nilai2'=>$nilai_gejala2
 		);
 		$this->db->where('id',$id);
 		$this->db->update('gejala', $data);

@@ -20,10 +20,11 @@ class Nilaicf_model extends CI_Model {
 	public function insert(){ 
 		$gejala_id = $this->input->post('gejala_id');
 		$penyakit_id = $this->input->post('penyakit_id');
-
+		$nilaigp = $this->db->get_where('penyakit', array('id' => $penyakit_id))->row();
 		$data = array(
 					'gejala_id'=>$gejala_id,
 					'penyakit_id'=>$penyakit_id,
+					'nilai_gp'=>$nilaigp->nilai
 				);
 		$this->db->insert('gejala_penyakit', $data);
 
@@ -38,11 +39,12 @@ class Nilaicf_model extends CI_Model {
 		$id = $this->input->post('id');
 		$gejala_id = $this->input->post('gejala_id');
 		$penyakit_id = $this->input->post('penyakit_id');
-
+		$nilaigp = $this->db->get_where('penyakit', array('id' => $penyakit_id))->row();
 
 		$data = array(
 					'gejala_id'=>$gejala_id,
-					'penyakit_id'=>$penyakit_id
+					'penyakit_id'=>$penyakit_id,
+					'nilai_gp'=>$nilaigp->nilai
 		);
 		$this->db->where('id',$id);
 		$this->db->update('gejala_penyakit', $data);
@@ -126,4 +128,12 @@ class Nilaicf_model extends CI_Model {
         );
         $this->db->insert('hasil_diagnosa', $data);
     }
+	function get_by_id_gejala($id){
+		 $this->db->select('*');
+        $this->db->from('gejala_penyakit gp'); // Ganti 'nama_tabel' dengan nama tabel yang sesuai
+		$this->db->join('gejala g', 'g.id=gp.gejala_id');
+        $this->db->where_in('gejala_id', $id); // Ganti 'checkbox_column' dengan nama kolom checkbox yang sesuai
+        $query = $this->db->get();
+        return $query;
+	}
 }

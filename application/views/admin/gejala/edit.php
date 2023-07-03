@@ -39,10 +39,19 @@
 									<br>
 									<div class="row">
 										<div class="col-md-2" style="margin-bottom: 5px;">
-											<span>Nilai Gejala : </span>
+											<span>Nilai H : </span>
 										</div>
 										<div class="col-md-12">
 											<input type="text" name="nilai_gejala" class="form-control" style="font-size: 12px;" value="<?php echo $gejala['nilai'] ?>">
+										</div>
+									</div>
+									<br>
+									<div class="row">
+										<div class="col-md-2" style="margin-bottom: 5px;">
+											<span>Nilai e : </span>
+										</div>
+										<div class="col-md-12">
+											<input type="text" name="nilai_gejala2" class="form-control" style="font-size: 12px;" value="<?php echo $gejala['nilai2'] ?>">
 										</div>
 									</div>
 									<br>
