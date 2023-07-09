@@ -236,32 +236,47 @@ class Welcome extends CI_Controller {
 			$inputann = $this->input->post('gejala');
 			$data["listGejala"] = $this->Gejala_model->get_by_id_gejala($inputann);
 			$listGejala = $this->Gejala_model->get_by_id_gejala($inputann);
+			$listAturan = $this->Nilaicf_model->get_by_id_gejala($inputann);
 			$totalNilaiGejala = 0;
 			$i=0;
 			$j=0;
-			foreach($listGejala->result() as $value){
-				$nilaigejala = floatval($value->nilai);
-				$totalNilaiGejala += $nilaigejala;
-				$i++;
+
+
+			// Menentukan nilai Semesta
+			// echo "2. Menentukan Nilai Semesta <br>";
+			$nilaiSemesta = 0;
+			foreach($listAturan->result() as $value){
+				$nilaiAturan = floatval($value->nilai_gp);
+				$j++;
+				$hasilKali= $nilaiAturan*$value->nilai;
+				$nilaiSemesta += $hasilKali;
+				// echo $j. " ". $nilaiAturan. " x ". $value->nilai."=".$hasilKali. "<br>";
 			}
-			$totalNilaiGejalaAkhir =$totalNilaiGejala;
+			// echo "Hasil nilai semesta adalah = ". $nilaiSemesta. "<br>";
+			// Menentukan Nilai probabilitas P(Hi)
+			$totalNilaiSemesta =$nilaiSemesta;
 			$hasilprob=0;
 			foreach($listGejala->result() as $value){
 				$nilaigejala = floatval($value->nilai);
-				$hasil=$nilaigejala/$totalNilaiGejalaAkhir;
-				$prob = $hasil*$nilaigejala;
+				$hasil=round($nilaigejala/$totalNilaiSemesta, 2);
+				$prob = round($hasil*$nilaigejala, 2);
 				$hasilprob += $prob;
+				$phie= $nilaigejala*$hasil/$hasilprob;
 				$j++;
+				// echo $nilaigejala. " : ". $totalNilaiSemesta."=".$hasil. "<br>";
 			}
 			$totalNilaiProb = $hasilprob;
+			// echo "<br> 3. Menentukan nilai probabilitas P(Hi) = ". $totalNilaiProb. "<br>";
+
+			// Menentukan nilai probabilitas P(Hi|E)
+			// echo "<br> 4. Menentukan nilai probabilitas P(Hi|E)<br>";
 			foreach($listGejala->result() as $value){
 				$nilaigejala = floatval($value->nilai);
-				$hasil=$nilaigejala/$totalNilaiGejalaAkhir;
-				
-				$nilai1 = $hasil*$nilaigejala;
-				$nilai2 = $nilai1/$totalNilaiProb;
-				$j++;
+				$hasil=round($nilaigejala/$totalNilaiSemesta, 2);
+				$phie = round($hasil*$nilaigejala/$totalNilaiProb,2);
+				// echo "Nilai P(Hi|E) = ". $phie. " <br>";
 			}
+			// Menentukan Nilai Bayes
 			$no=0;
 			$data=array();
 			foreach($listGejala->result() as $value){
@@ -269,16 +284,15 @@ class Welcome extends CI_Controller {
 				$query = $this->db->get('gejala_penyakit');
 					foreach ($query->result() as $row) {
 						$nilaigejala = floatval($value->nilai);
-				$hasil=$nilaigejala/$totalNilaiGejalaAkhir;
-				$nilai1 = $hasil*$nilaigejala;
-				$nilai2 = $nilai1/$totalNilaiProb;
-				$j++;
-				$no++;
-				$kali = $value->nilai*$nilai2;
-				$data[]= array(
-					'prob' => $kali,
-					'id_penyakit' => $row->penyakit_id
-				);
+						$hasil=round($nilaigejala/$totalNilaiSemesta, 2);
+						$phie = round($hasil*$nilaigejala/$totalNilaiProb,2);
+						$j++;
+						$no++;
+						$kali = $value->nilai*$phie;
+						$data[]= array(
+							'prob' => $kali,
+							'id_penyakit' => $row->penyakit_id
+						);
 					}
 			}
 			$queryP = $this->db->get('penyakit');
@@ -301,6 +315,8 @@ class Welcome extends CI_Controller {
 				$hasilDiagnosa[$nama] = round($result, 4)*100 ;
 				// echo $i.". ".($result)."<br>";
 			}
+			// var_dump($hasilDiagnosa);
+			// die;
 			$highestValueID = max($hasilDiagnosa);
 			$idHasilPenyakit=0;
 			foreach ($hasilDiagnosaID as $keyID => $value) {
